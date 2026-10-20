@@ -3,7 +3,7 @@ pipeline {
 
   environment {
     IMAGE_NAME = "sharjil200/devops-demo"   // change this
-    EC2_HOST   = "ubuntu@16.4.47.198"          // from `terraform output`
+    EC2_HOST   = "ubuntu@65.2.73.161"          // from `terraform output`
     TAG        = "${env.BUILD_NUMBER}"
   }
 
