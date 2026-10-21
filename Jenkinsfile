@@ -2,8 +2,8 @@ pipeline {
   agent any
 
   environment {
-    IMAGE_NAME = "sharjil200/devops-demo"   // change this
-    EC2_HOST   = "ubuntu@65.2.73.161"          // from `terraform output`
+    IMAGE_NAME = "sharjil200/devops-demo"
+    EC2_HOST   = "ubuntu@65.2.73.161"
     TAG        = "${env.BUILD_NUMBER}"
   }
 
@@ -11,8 +11,9 @@ pipeline {
     stage('Test') {
       steps {
         sh '''
-          docker run --rm -v "$PWD/app":/app -w /app python:3.12-slim \
-            sh -c "pip install -q -r requirements.txt && pytest -q"
+          docker run --rm -u $(id -u):$(id -g) -e HOME=/tmp -e PYTHONDONTWRITEBYTECODE=1 \
+            -v "$PWD/app":/app -w /app python:3.12-slim \
+            sh -c "pip install -q --user -r requirements.txt && python -m pytest -q -p no:cacheprovider"
         '''
       }
     }
