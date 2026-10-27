@@ -1,5 +1,5 @@
 import os, time
-from flask import Flask, jsonify, request
+from flask import Flask, render_template, jsonify, request
 from prometheus_client import Counter, Histogram, generate_latest, CONTENT_TYPE_LATEST
 
 app = Flask(__name__)
@@ -21,8 +21,6 @@ def _record(resp):
     REQUESTS.labels(request.method, path, resp.status_code).inc()
     return resp
 
-
-from flask import render_template
 
 @app.get("/")
 def index():
