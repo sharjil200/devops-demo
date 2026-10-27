@@ -27,9 +27,9 @@ pipeline {
     stage('Push') {
       steps {
         withCredentials([usernamePassword(credentialsId: 'dockerhub-creds',
-                          usernameVariable: 'U', passwordVariable: 'P')]) {
+                            usernameVariable: 'U', passwordVariable: 'P')]) {
           sh '''
-            echo "$P" | docker login -u "$U" --password-stdin
+            "$P" | docker login -u "$U" --password-stdin
             docker push $IMAGE_NAME:$TAG
             docker push $IMAGE_NAME:latest
           '''
@@ -41,6 +41,11 @@ pipeline {
       steps {
         sshagent(['ec2-ssh']) {
           sh '''
+            # FIX: Clean up any formatting/line-ending issues in the auto-generated sshagent key file
+            find "${WORKSPACE}@tmp" -name "private_key_*.key" -exec sed -i 's/\r$//' {} \\; 2>/dev/null || true
+            find "${WORKSPACE}@tmp" -name "private_key_*.key" -exec sh -c 'echo "" >> "{}"' \\; 2>/dev/null || true
+
+            # Deployment commands
             ssh -o StrictHostKeyChecking=no $EC2_HOST "mkdir -p ~/devops-demo"
             scp -o StrictHostKeyChecking=no -r docker-compose.yml monitoring $EC2_HOST:~/devops-demo/
             ssh -o StrictHostKeyChecking=no $EC2_HOST \
