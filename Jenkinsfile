@@ -3,7 +3,7 @@ pipeline {
 
   environment {
     IMAGE_NAME = "sharjil200/devops-demo"
-    EC2_HOST   = "ubuntu@16.4.139.254"
+    EC2_HOST   = "ubuntu@3.111.40.34"
     TAG        = "${env.BUILD_NUMBER}"
   }
 
