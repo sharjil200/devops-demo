@@ -24,7 +24,7 @@ def _record(resp):
 
 @app.get("/")
 def index():
-    return jsonify(message="Hello from DevOps demo", version=VERSION)
+    return jsonify(message="Hello from DevOps demo - v2!", version=VERSION)
 
 
 @app.get("/health")
