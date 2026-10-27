@@ -22,9 +22,11 @@ def _record(resp):
     return resp
 
 
+from flask import render_template
+
 @app.get("/")
 def index():
-    return jsonify(message="Hello from DevOps demo - v2!", version=VERSION)
+    return render_template("index.html", version=VERSION)
 
 
 @app.get("/health")
